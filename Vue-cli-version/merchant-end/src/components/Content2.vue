@@ -25,12 +25,12 @@
       		<Dish v-for="(dish, index) in dishes"
       					v-bind:key="dish.id"
       					v-bind:dishname="dish.name"
-      					v-bind:discription="dish.des"
+      					v-bind:description="dish.des"
       					v-on:remove="dishes.splice(index,1)">
       		</Dish>
       </div>
       <div id="pages">
-					<Page total="100" show-elevator show-sizer ></Page>
+					<Page :total="100" show-elevator show-sizer ></Page>
 			</div>
   	</Card>
   </Content>
@@ -75,7 +75,7 @@
 					des:this.newdes
 				});
 				this.newname='';
-				this.newdes;
+				this.newdes= '';
 			}
 		}
 	}
