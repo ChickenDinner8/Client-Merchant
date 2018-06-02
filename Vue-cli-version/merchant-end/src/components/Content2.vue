@@ -6,6 +6,14 @@
 		margin-right: 3%;
 		margin-bottom: 3%;
 	}
+	#addbutton {
+		margin-right: auto;
+		margin-left:auto;
+		width: 90%;
+		height: 40px;
+		font-size: 20px;
+		color: #80848f
+	}
 </style>
 
 
@@ -16,66 +24,84 @@
       <BreadcrumbItem>Components</BreadcrumbItem>
     </Breadcrumb>
   	<Card>
-      <div style="height: 1000px">
-					<h2>菜单</h2>
-					<Input v-model="newname" placeholder="name" style="width:150px"></Input>
-					<br></br>
-					<Input v-model="newdes" type="textarea" :rows="3" placeholder="description" style="width: 300px"></Input>
-					<Button v-on:click="addNewDish">添加</Button>
-      		<Dish v-for="(dish, index) in dishes"
-      					v-bind:key="dish.id"
-      					v-bind:dishname="dish.name"
-      					v-bind:discription="dish.des"
-      					v-on:remove="dishes.splice(index,1)">
-      		</Dish>
-      </div>
-      <div id="pages">
-					<Page total="100" show-elevator show-sizer ></Page>
-			</div>
+    	<div style="height: 1000px">
+			<h2 style="color: #80848f">菜单</h2>
+			<br></br>
+			<Button id="addbutton" v-on:click="modal = true" type="dashed" icon="plus">添加</Button>
+			<Modal width=720 v-model="modal" @on-ok="addNewDish" >
+				<h2 slot="header">添加菜品</h2>
+				<Addwindow v-on:AddNewDish="Refresh"></Addwindow>
+			</Modal>
+		    <Dish v-for="(dish, index) in dishes"
+		      	v-bind:key="dish.id"
+		      	v-bind:dishname="dish.name"
+		      	v-bind:description="dish.des"
+		      	v-bind:price="dish.price"
+		      	v-on:remove="dishes.splice(index,1)"
+		      	style="width:90%">
+		    </Dish>
+      	</div>
+      	<div id="pages">
+			<Page :total="100" show-elevator show-sizer ></Page>
+		</div>
   	</Card>
   </Content>
 </template>
 
 <script>
 	import Dish from '@/components/Dish'
-
+	import Addwindow from '@/components/Addwindow'
 	export default {
 		data() {
 			return {
 				newname:'',
 				newdes:'',
+				newprice:'',
+				modal: false,
 				dishes: [
 					{
 						id:1,
 						name:'dish1',
-						des:'description1',
+						des:'description',
+						price:'113',
 					},
 					{
 						id:2,
 						name:'dish2',
 						des:'description2',
+						price:'112',
 					},
 					{
 						id:3,
 						name:'dish3',
-						des:'description3'
+						des:'description3',
+						price:'111'
 					}
 				],
 				newid:4
 			}
 		},
 		components: {
-			Dish
+			Dish,
+			Addwindow
 		},
 		methods: {
-			addNewDish: function() {
+			addNewDish() {
+
 				this.dishes.push({
 					id:this.newid++,
 					name:this.newname,
-					des:this.newdes
+					des:this.newdes,
+					price:this.newprice
 				});
 				this.newname='';
-				this.newdes;
+				this.newdes= '';
+				this.newprice = '';
+			},
+			Refresh(data) {
+				this.newname = data.EditedName;
+				this.newdes = data.EditedDescription;
+				this.newprice = data.EditedPrice;
 			}
 		}
 	}
