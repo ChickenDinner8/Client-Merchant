@@ -32,17 +32,19 @@
 				<h2 slot="header">添加菜品</h2>
 				<Addwindow v-on:AddNewDish="Refresh"></Addwindow>
 			</Modal>
-		    <Dish v-for="(dish, index) in dishes"
+		    <Dish v-for="dish in dishes"
 		      	v-bind:key="dish.id"
+		      	v-bind:dishid="dish.id"
 		      	v-bind:dishname="dish.name"
 		      	v-bind:description="dish.des"
 		      	v-bind:price="dish.price"
-		      	v-on:remove="dishes.splice(index,1)"
+		      	v-on:remove="DeleteDish(dish.id)"
 		      	style="width:90%">
 		    </Dish>
       	</div>
       	<div id="pages">
-			<Page :total="100" show-elevator show-sizer ></Page>
+
+			<Page :total="100" show-elevator show-sizer @on-change="ChangePage"></Page>
 		</div>
   	</Card>
   </Content>
@@ -58,7 +60,7 @@
 				newdes:'',
 				newprice:'',
 				modal: false,
-				dishes: [
+				alldishes: [
 					{
 						id:1,
 						name:'dish1',
@@ -78,7 +80,9 @@
 						price:'111'
 					}
 				],
-				newid:4
+				dishes: [],
+				newid:4,
+				newpage:1
 			}
 		},
 		components: {
@@ -88,7 +92,7 @@
 		methods: {
 			addNewDish() {
 
-				this.dishes.push({
+				this.alldishes.push({
 					id:this.newid++,
 					name:this.newname,
 					des:this.newdes,
@@ -97,12 +101,47 @@
 				this.newname='';
 				this.newdes= '';
 				this.newprice = '';
+
+				this.RefreshList(this.newpage);
 			},
 			Refresh(data) {
 				this.newname = data.EditedName;
 				this.newdes = data.EditedDescription;
 				this.newprice = data.EditedPrice;
+
+			},
+			RefreshList(page) {
+				this.dishes.splice(0, this.dishes.length);
+				var totalDish = this.alldishes.length;
+				if (totalDish < (page - 1) * 5) {
+					
+				} else {
+					if (totalDish - (page - 1) * 5 > 5) {
+						this.dishes=this.alldishes.reverse().slice((page - 1) * 5, page * 5);
+						this.alldishes.reverse();
+					} else {
+						this.dishes=this.alldishes.reverse().slice((page - 1) * 5);
+						this.alldishes.reverse();
+					}
+					
+				}
+			},
+			ChangePage(page) {
+				this.newpage=page;
+				this.RefreshList(page);
+			},
+			DeleteDish(index) {
+				this.alldishes.splice(this.alldishes.findIndex(function(tar) {
+					return tar.id == index;
+				}), 1);
+				this.RefreshList(this.newpage);
+
 			}
+		},
+		mounted: function() {
+			this.$nextTick(function () {
+          		this.RefreshList(1);
+      		})
 		}
 	}
 </script>
