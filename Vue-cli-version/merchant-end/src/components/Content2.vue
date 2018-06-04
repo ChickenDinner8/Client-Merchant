@@ -43,6 +43,7 @@
 		    </Dish>
       	</div>
       	<div id="pages">
+
 			<Page :total="100" show-elevator show-sizer @on-change="ChangePage"></Page>
 		</div>
   	</Card>
@@ -100,12 +101,14 @@
 				this.newname='';
 				this.newdes= '';
 				this.newprice = '';
+
 				this.RefreshList(this.newpage);
 			},
 			Refresh(data) {
 				this.newname = data.EditedName;
 				this.newdes = data.EditedDescription;
 				this.newprice = data.EditedPrice;
+
 			},
 			RefreshList(page) {
 				this.dishes.splice(0, this.dishes.length);
@@ -132,6 +135,7 @@
 					return tar.id == index;
 				}), 1);
 				this.RefreshList(this.newpage);
+
 			}
 		},
 		mounted: function() {

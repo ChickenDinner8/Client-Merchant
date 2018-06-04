@@ -88,7 +88,6 @@
 				this.change = false;
 			},
 			cancel() {
-
 			},
 			Refresh(data) {
 				this.tempname = data.EditedName;
