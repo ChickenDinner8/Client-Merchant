@@ -32,12 +32,13 @@
 				<h2 slot="header">添加菜品</h2>
 				<Addwindow v-on:AddNewDish="Refresh"></Addwindow>
 			</Modal>
-		    <Dish v-for="(dish, index) in dishes"
+		    <Dish v-for="dish in dishes"
 		      	v-bind:key="dish.id"
+		      	v-bind:dishid="dish.id"
 		      	v-bind:dishname="dish.name"
 		      	v-bind:description="dish.des"
 		      	v-bind:price="dish.price"
-		      	v-on:remove="dishes.splice(index,1)"
+		      	v-on:remove="DeleteDish(dish.id)"
 		      	style="width:90%">
 		    </Dish>
       	</div>
@@ -121,14 +122,22 @@
 					}
 					
 				}
-				
-				console.log(page);
-				console.log(totalDish);
 			},
 			ChangePage(page) {
 				this.newpage=page;
 				this.RefreshList(page);
+			},
+			DeleteDish(index) {
+				this.alldishes.splice(this.alldishes.findIndex(function(tar) {
+					return tar.id == index;
+				}), 1);
+				this.RefreshList(this.newpage);
 			}
+		},
+		mounted: function() {
+			this.$nextTick(function () {
+          		this.RefreshList(1);
+      		})
 		}
 	}
 </script>

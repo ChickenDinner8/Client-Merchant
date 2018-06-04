@@ -75,25 +75,29 @@
 				tempname: '',
 				tempdescription: '',
 				tempprice: '',
+				change: false
 			}
 		},
 		methods: {
 			ok() {
-				this.dishname = this.tempname;
-				this.description = this.tempdescription;
-				this.price = this.tempprice;
+				if (this.change == true) {
+					this.dishname = this.tempname;
+					this.description = this.tempdescription;
+					this.price = this.tempprice;
+				}
+				this.change = false;
 			},
 			cancel() {
-				console.log('cancel');
+
 			},
 			Refresh(data) {
 				this.tempname = data.EditedName;
 				this.tempdescription = data.EditedDescription;
 				this.tempprice = data.EditedPrice;
-				console.log('OK');
+				this.change = true;
 			}
 		},
-		props: ['dishname', 'description', 'price'],
+		props: ['dishname', 'description', 'price', 'dishid'],
 		components: {
 			Editwindow
 		}
