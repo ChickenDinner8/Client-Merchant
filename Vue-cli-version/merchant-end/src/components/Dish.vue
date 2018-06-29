@@ -27,7 +27,9 @@
 	<Card :bordered="false" class="dishes" >
 		<Row>
 			<Col span="4">
-				<div id="photo-list"></div>
+				<div id="photo-list">
+					<img :src="image" style="height:100%;width:100%;">
+				</div>
 			</Col>
 			<Col span="8">
 				<p>{{dishname}}</p>
@@ -50,9 +52,10 @@
 						<h2 slot="header">添加菜品</h2>
 						<Editwindow v-bind:srcdescription="this.description" 
 									v-bind:srcdishname="this.dishname"
+									v-bind:srcimage="this.image"
 									v-bind:srcdishprice="this.price"
 									v-on:UpdateDish="Refresh"
-									></Editwindow>
+									ref="editwin"></Editwindow>
 					</Modal>
 					<Modal v-model="modal2">
 						<Input></Input>
@@ -75,28 +78,47 @@
 				tempname: '',
 				tempdescription: '',
 				tempprice: '',
+				tempimage: '',
 				change: false
 			}
 		},
 		methods: {
 			ok() {
 				if (this.change == true) {
-					this.dishname = this.tempname;
-					this.description = this.tempdescription;
-					this.price = this.tempprice;
+					var _this = this;
+					this.axios.put('api/food/4/'+this.dishid, {
+						food_name: _this.tempname,
+						description: _this.tempdescription,
+						price:_this.tempprice,
+						image:_this.tempimage,
+						priority:1
+					})
+					.then(function(response) {
+						console.log(response);
+						_this.dishname = _this.tempname;
+						_this.description = _this.tempdescription;
+						_this.price = _this.tempprice;
+						_this.image = _this.tempimage;
+						
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 				}
 				this.change = false;
 			},
 			cancel() {
+				this.$refs.editwin.reset()
 			},
 			Refresh(data) {
 				this.tempname = data.EditedName;
 				this.tempdescription = data.EditedDescription;
 				this.tempprice = data.EditedPrice;
+				this.tempimage = data.EditedImage
 				this.change = true;
 			}
 		},
-		props: ['dishname', 'description', 'price', 'dishid'],
+		props: ['dishname', 'description', 'price', 'dishid', 'image'],
 		components: {
 			Editwindow
 		}

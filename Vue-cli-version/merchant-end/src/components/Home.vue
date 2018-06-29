@@ -43,19 +43,18 @@
                     <Submenu name="1">
                         <template slot="title">
                             <Icon type="ios-analytics"></Icon>
-                                Navigation One
+                                导航栏
                         </template>
-                    <MenuGroup title="Item 1">
+                    <MenuGroup title="餐厅管理">
                         <router-link to="/home/content1">
-                        <MenuItem name="1-1">Option 1</MenuItem>
+                        <MenuItem name="1-1">餐厅信息</MenuItem>
                         </router-link>
                         <router-link to="/home/content2">
-                        <MenuItem name="1-2">Option 2</MenuItem>
+                        <MenuItem name="1-2">菜单管理</MenuItem>
                         </router-link>
                     </MenuGroup>
-                    <MenuGroup title="Item 2">
-                        <MenuItem name="1-3">Option 3</MenuItem>
-                        <MenuItem name="1-4">Option 4</MenuItem>
+                    <MenuGroup title="个人中心">
+                        <MenuItem name="1-3">设置</MenuItem>
                     </MenuGroup>
                      </Submenu>
                 </Menu>

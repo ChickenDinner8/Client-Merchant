@@ -5,8 +5,13 @@
 	<div>
 		<Row span="24">
 		<Col span="8">
-			<div id="photo"></div>
-
+			<div id="photo" v-if="upload_finished==true">
+				<img :src="this.image_url" style="height:100%;width:100%;">
+			</div>
+			<br/><br/>
+			<Upload action="/api/upload_image" style="float:right; margin-right:24px;" :on-success="handleSuccess" name="image" ref="upload">
+				<Button type="ghost" icon="ios-cloud-upload-outline">上传图片</Button>
+			</Upload>
 		</Col>
 		<Col span="16">
 			<div>
@@ -27,7 +32,8 @@
 	export default {
 		data() {
 			return {
-
+				image_url:'',
+				upload_finished:false
 			}
 		},
 		props: ['srcdishname', 'srcdescription', 'srcdishprice'],
@@ -36,9 +42,23 @@
 				let data = {
 					EditedName: this.srcdishname,
 					EditedDescription: this.srcdescription,
-					EditedPrice: this.srcdishprice
+					EditedPrice: this.srcdishprice,
+					EditedImage: this.image_url
 				};
 				this.$emit('AddNewDish', data);
+			},
+			handleSuccess (res, file) {
+				console.log(res);
+				console.log(file);
+				this.image_url = 'http://' + res.url;
+				this.upload_finished = true;
+				this.DeliverData();
+				this.$refs.upload.clearFiles();
+			},
+			reset() {
+				this.upload_finished=false;
+				this.$refs.upload.clearFiles();
+				this.image_url='';
 			}
 		}
 	}

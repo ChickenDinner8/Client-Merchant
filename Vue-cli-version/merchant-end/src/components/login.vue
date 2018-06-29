@@ -154,7 +154,7 @@ export default {
     	if(this.username == "" || this.password == ""){
 			alert("请输入用户名或密码")
 		}else{
-	     	this.axios.post('/api/boss/login', {
+	     	this.axios.post('/api/boss/session', {
 	        	username: this.username,
 	        	password: this.password
 	      	}).then(res => {

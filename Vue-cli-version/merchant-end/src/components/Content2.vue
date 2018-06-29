@@ -21,24 +21,25 @@
 	<Content :style="{padding: '0 16px 16px'}">
   	<Breadcrumb :style="{margin: '16px 0'}">
     	<BreadcrumbItem>Home</BreadcrumbItem>
-      <BreadcrumbItem>Components</BreadcrumbItem>
+      	<BreadcrumbItem>Menu</BreadcrumbItem>
     </Breadcrumb>
   	<Card>
     	<div style="height: 1000px">
 			<h2 style="color: #80848f">菜单</h2>
 			<br></br>
 			<Button id="addbutton" v-on:click="modal = true" type="dashed" icon="plus">添加</Button>
-			<Modal width=720 v-model="modal" @on-ok="addNewDish" >
+			<Modal width=720 v-model="modal" @on-ok="addNewDish" @on-cancel="cancel">
 				<h2 slot="header">添加菜品</h2>
-				<Addwindow v-on:AddNewDish="Refresh"></Addwindow>
+				<Addwindow v-on:AddNewDish="Refresh" ref="addwin"></Addwindow>
 			</Modal>
 		    <Dish v-for="dish in dishes"
-		      	v-bind:key="dish.id"
-		      	v-bind:dishid="dish.id"
-		      	v-bind:dishname="dish.name"
-		      	v-bind:description="dish.des"
+		      	v-bind:key="dish.food_id"
+		      	v-bind:dishid="dish.food_id"
+		      	v-bind:dishname="dish.food_name"
+		      	v-bind:description="dish.description"
 		      	v-bind:price="dish.price"
-		      	v-on:remove="DeleteDish(dish.id)"
+		      	v-bind:image="dish.image"
+		      	v-on:remove="DeleteDish(dish.food_id)"
 		      	style="width:90%">
 		    </Dish>
       	</div>
@@ -59,29 +60,10 @@
 				newname:'',
 				newdes:'',
 				newprice:'',
+				newimage:'',
 				modal: false,
-				alldishes: [
-					{
-						id:1,
-						name:'dish1',
-						des:'description',
-						price:'113',
-					},
-					{
-						id:2,
-						name:'dish2',
-						des:'description2',
-						price:'112',
-					},
-					{
-						id:3,
-						name:'dish3',
-						des:'description3',
-						price:'111'
-					}
-				],
+				alldishes: [],
 				dishes: [],
-				newid:4,
 				newpage:1
 			}
 		},
@@ -91,57 +73,111 @@
 		},
 		methods: {
 			addNewDish() {
+				var _this = this;
+				console.log(this.newimage);
+				this.axios.post('/api/food/4', {
+					food_name:_this.newname,
+					description:_this.newdes,
+					price:_this.newprice,
+					image:_this.newimage,
+					priority:1
+				})
+				.then(function(response) {
+					console.log(response);
+					_this.RefreshList(_this.newpage);
+					_this.$refs.addwin.reset();
+				})
+				.catch(function(error) {
+					console.log(error);
+				});
 
+
+
+/*
 				this.alldishes.push({
-					id:this.newid++,
-					name:this.newname,
-					des:this.newdes,
+					food_id:this.newid,
+					food_name:this.newname,
+					description:this.newdes,
 					price:this.newprice
 				});
 				this.newname='';
 				this.newdes= '';
 				this.newprice = '';
-
-				this.RefreshList(this.newpage);
+				this.newid = this.newid + 1;
+*/
+				
 			},
 			Refresh(data) {
 				this.newname = data.EditedName;
 				this.newdes = data.EditedDescription;
 				this.newprice = data.EditedPrice;
-
+				this.newimage = data.EditedImage;
 			},
 			RefreshList(page) {
-				this.dishes.splice(0, this.dishes.length);
-				var totalDish = this.alldishes.length;
-				if (totalDish < (page - 1) * 5) {
+
+				var _this = this;
+				this.axios.get('/api/menu/4')
+				.then(function (response) {
+    				console.log(response.data.foods);
+    				if (response.status == '200') {
+    					_this.alldishes = response.data.foods;
+ 						console.log(_this.alldishes);
+ 						_this.dishes.splice(0, _this.dishes.length);
+						var totalDish = _this.alldishes.length;
+						if (totalDish < (page - 1) * 5) {
+
+						} else {
+							if (totalDish - (page - 1) * 5 > 5) {
+								_this.dishes=_this.alldishes.reverse().slice((page - 1) * 5, page * 5);
+								_this.alldishes.reverse();
+							} else {
+								_this.dishes=_this.alldishes.reverse().slice((page - 1) * 5);
+								_this.alldishes.reverse();
+							}
 					
-				} else {
-					if (totalDish - (page - 1) * 5 > 5) {
-						this.dishes=this.alldishes.reverse().slice((page - 1) * 5, page * 5);
-						this.alldishes.reverse();
-					} else {
-						this.dishes=this.alldishes.reverse().slice((page - 1) * 5);
-						this.alldishes.reverse();
-					}
-					
-				}
+						}
+
+    				}
+ 				 })
+				.catch(function (error) {
+    				console.log(error);
+ 				 });
+
+
+				
 			},
 			ChangePage(page) {
 				this.newpage=page;
 				this.RefreshList(page);
 			},
+			cancel() {
+				this.$refs.addwin.reset();
+			},
 			DeleteDish(index) {
-				this.alldishes.splice(this.alldishes.findIndex(function(tar) {
-					return tar.id == index;
-				}), 1);
-				this.RefreshList(this.newpage);
+				var _this = this;
+				this.axios.delete('api/food/4/'+index, {
+
+				})
+				.then(function(response) {
+					console.log(response);
+					_this.RefreshList(_this.newpage);
+				})
+				.catch(function(error) {
+					console.log(error);
+				});
+				
 
 			}
 		},
 		mounted: function() {
 			this.$nextTick(function () {
-          		this.RefreshList(1);
+
+				
+
+ 				this.RefreshList(1);
       		})
+
+
 		}
 	}
 </script>
