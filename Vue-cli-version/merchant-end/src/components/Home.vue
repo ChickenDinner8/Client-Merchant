@@ -52,11 +52,11 @@
                         <router-link to="/home/menu">
                         <MenuItem name="1-2">菜单管理</MenuItem>
                         </router-link>
-                        <MenuItem name="1-2">订单管理</MenuItem>
+                        <MenuItem name="1-3">订单管理</MenuItem>
                     </MenuGroup>
                     <MenuGroup title="个人中心">
-                        <MenuItem name="1-3">餐桌二维码生成</MenuItem>
-                        <MenuItem name="1-3">设置</MenuItem>
+                        <MenuItem name="2-1">餐桌二维码生成</MenuItem>
+                        <MenuItem name="2-2">设置</MenuItem>
                     </MenuGroup>
                      </Submenu>
                 </Menu>
