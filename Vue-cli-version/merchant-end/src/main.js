@@ -7,13 +7,14 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-import QRCode from 'qrcode'
+import QRCode from 'qrcodejs2'
 
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
 Vue.use(VueAxios, axios)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
