@@ -58,7 +58,7 @@
                     </MenuGroup>
                     <MenuGroup title="个人中心">
                         <router-link to="/home/generate_qrcode">
-                        <MenuItem name="2-1">餐桌二维码生成</MenuItem>
+                        <MenuItem name="2-1">定制餐桌二维码</MenuItem>
                         </router-link>
                         <MenuItem name="2-2">设置</MenuItem>
                     </MenuGroup>

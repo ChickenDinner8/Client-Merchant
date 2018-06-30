@@ -41,7 +41,7 @@
 			</Col>
 			<Col span="3">
 				<p>月销量：</p>
-				<p>{{price}}</p>
+				<p>----------</p>
 			</Col>
 
 		</Row>
@@ -99,7 +99,7 @@
 						_this.description = _this.tempdescription;
 						_this.price = _this.tempprice;
 						_this.image = _this.tempimage;
-						
+
 					})
 					.catch(function(error) {
 						console.log(error);
