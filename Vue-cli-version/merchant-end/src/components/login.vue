@@ -95,7 +95,7 @@
 	<div class="layout">
 		<div id="Sign-content">
 			<div id="sign-container">
-				<Tabs value="signup">
+				<Tabs value="username">
 					<TabPane label="账户密码登录" name="username">
 						<div class="Loginlabel-Name">
 							<Input id="name-input" v-model="username" placeholder="用户名"></Input>
@@ -159,7 +159,6 @@ export default {
 	        	password: this.password
 	      	}).then(res => {
 	      		if(res.status =='200') {
-	      			alert("登陆成功")
 	      			console.log(res)
 	          		this.$router.push({path:'home',query:{id:1}})
 	      		} else {

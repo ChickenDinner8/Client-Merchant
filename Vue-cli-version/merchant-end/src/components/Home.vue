@@ -47,12 +47,14 @@
                         </template>
                     <MenuGroup title="餐厅管理">
                         <router-link to="/home/restaurantinfo">
-                        <MenuItem name="1-1">餐厅信息</MenuItem>
+                            <MenuItem name="1-1">餐厅信息</MenuItem>
                         </router-link>
                         <router-link to="/home/menu">
-                        <MenuItem name="1-2">菜单管理</MenuItem>
+                            <MenuItem name="1-2">菜单管理</MenuItem>
                         </router-link>
-                        <MenuItem name="1-3">订单管理</MenuItem>
+                        <router-link to="/home/order">
+                            <MenuItem name="1-3">订单管理</MenuItem>
+                        </router-link>
                     </MenuGroup>
                     <MenuGroup title="个人中心">
                         <router-link to="/home/generate_qrcode">

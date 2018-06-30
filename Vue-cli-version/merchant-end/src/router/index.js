@@ -33,7 +33,7 @@ export default new Router({
           component: QRcode
         },
       	{
-      		path: '/order',
+      		path: 'order',
       		component: Order
       	}
       ]
