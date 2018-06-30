@@ -27,8 +27,8 @@
     	<div style="height: 1000px">
 			<h2 style="color: #80848f">菜单</h2>
 			<br></br>
-			<Button id="addbutton" v-on:click="modal = true" type="dashed" icon="plus">添加</Button>
-			<Modal width=720 v-model="modal" @on-ok="addNewDish" @on-cancel="cancel">
+			<Button id="addbutton" v-on:click="modal = true" type="dashed" icon="plus">添加菜品</Button>
+			<Modal width=720 v-model="modal" @on-ok="addNewDish" @on-cancel="cancel" :mask-closable="false" :closable="false">
 				<h2 slot="header">添加菜品</h2>
 				<Addwindow v-on:AddNewDish="Refresh" ref="addwin"></Addwindow>
 			</Modal>
@@ -73,38 +73,75 @@
 		},
 		methods: {
 			addNewDish() {
-				var _this = this;
-				console.log(this.newimage);
-				this.axios.post('/api/food/4', {
-					food_name:_this.newname,
-					description:_this.newdes,
-					price:_this.newprice,
-					image:_this.newimage,
-					priority:1
-				})
-				.then(function(response) {
-					console.log(response);
-					_this.RefreshList(_this.newpage);
-					_this.$refs.addwin.reset();
-				})
-				.catch(function(error) {
-					console.log(error);
-				});
+				if (this.newname=='') {
 
+					this.$Modal.warning({
+						title: '菜品名称不能为空',
+						content: '请输入菜品名称'
+					});
 
+					this.cancel();
+							
+				} else if (this.newdes=='') {
 
-/*
-				this.alldishes.push({
-					food_id:this.newid,
-					food_name:this.newname,
-					description:this.newdes,
-					price:this.newprice
-				});
-				this.newname='';
-				this.newdes= '';
-				this.newprice = '';
-				this.newid = this.newid + 1;
-*/
+					this.$Modal.warning({
+						title: '菜品描述不能为空',
+						content: '请输入菜品描述'
+					});
+
+					this.cancel();
+							
+				} else if (this.newprice=='') {
+
+					this.$Modal.warning({
+						title: '菜品价格不能为空',
+						content: '请输入菜品价格'
+					});
+
+					this.cancel();
+							
+				} else if (this.newimage=='') {
+
+					this.$Modal.warning({
+						title: '菜品图片不能为空',
+						content: '请上传菜品图片'
+					});
+
+					this.cancel();
+							
+				} else {
+					this.$Modal.confirm({
+						title:'确认添加',
+						content:'是否确认添加菜品？',
+						loading: true,
+						onOk: () => {
+								var _this = this;
+								console.log(this.newimage);
+								this.axios.post('/api/food/4', {
+									food_name:_this.newname,
+									description:_this.newdes,
+									price:_this.newprice,
+									image:_this.newimage,
+									priority:1
+								})
+								.then(function(response) {
+									_this.$Modal.remove();
+									console.log(response);
+									_this.$Message.success('添加成功！');
+									_this.RefreshList(_this.newpage);
+									_this.$refs.addwin.reset();
+								})
+								.catch(function(error) {
+									_this.$Modal.remove();
+									_this.$Message.error('添加失败！');
+									console.log(error);
+								});		
+						}
+					});
+				}
+				
+				
+				this.$refs.addwin.reset();
 				
 			},
 			Refresh(data) {
@@ -115,10 +152,16 @@
 			},
 			RefreshList(page) {
 
+				const loading = this.$Message.loading({
+					content:'正在获取菜单数据，请耐心等待',
+					duration:0
+				});
+
 				var _this = this;
 				this.axios.get('/api/menu/4')
 				.then(function (response) {
     				console.log(response.data.foods);
+    				setTimeout(loading, 1);
     				if (response.status == '200') {
     					_this.alldishes = response.data.foods;
  						console.log(_this.alldishes);
@@ -140,6 +183,7 @@
     				}
  				 })
 				.catch(function (error) {
+					setTimeout(loading,1);
     				console.log(error);
  				 });
 
@@ -152,20 +196,36 @@
 			},
 			cancel() {
 				this.$refs.addwin.reset();
+				this.newname='';
+				this.newdes='';
+				this.newprice='';
+				this.newimage='';
 			},
 			DeleteDish(index) {
-				var _this = this;
-				this.axios.delete('api/food/4/'+index, {
+				this.$Modal.confirm({
+					title:'确认删除',
+					content:'是否确认删除该菜品？',
+					loading: true,
+					onOk: () => {
+						var _this = this;
+						this.axios.delete('api/food/4/'+index, {
 
-				})
-				.then(function(response) {
-					console.log(response);
-					_this.RefreshList(_this.newpage);
-				})
-				.catch(function(error) {
-					console.log(error);
+						})
+						.then(function(response) {
+							console.log(response);
+							_this.$Modal.remove();
+							_this.$Message.success('删除成功！');
+							_this.RefreshList(_this.newpage);
+						})
+						.catch(function(error) {
+							_this.$Modal.remove();
+							_this.$Message.error('删除失败！');
+							console.log(error);
+						});
+					}
 				});
-				
+
+
 
 			}
 		},

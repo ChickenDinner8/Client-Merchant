@@ -95,7 +95,7 @@
 	<div class="layout">
 		<div id="Sign-content">
 			<div id="sign-container">
-				<Tabs value="username">
+				<Tabs value="signup">
 					<TabPane label="账户密码登录" name="username">
 						<div class="Loginlabel-Name">
 							<Input id="name-input" v-model="username" placeholder="用户名" />
@@ -138,7 +138,7 @@ export default {
   data () {
     return {
     	username: '',
-    	password: ''
+    	password: '',
     }
   },
   methods: {
@@ -150,22 +150,29 @@ export default {
     	if(this.username == "" || this.password == ""){
 			alert("请输入用户名或密码")
 		}else{
+			const loading = this.$Message.loading({
+				content:'正在提交数据进行验证，请耐心等待',
+				duration:0
+			});
+
+			var _this = this;
 	     	this.axios.post('/api/boss/session', {
 	        	username: this.username,
 	        	password: this.password
 	      	}).then(res => {
+	      		setTimeout(loading,1);
 	      		if(res.status =='200') {
-	      			console.log(res)
-	          		this.$router.push({path:'home',query:{id:1}})
+	      			_this.$Message.success("登录成功");
+	      			console.log(res);
+	          		this.$router.push({path:'home',query:{id:1}});
 	      		} else {
-	      			alert("账号密码错误")
+	      			_this.$Message.error("账号密码错误");
 	      		}
 	          	
 	        }).catch(err => {
-	          	console.log('err: ', err)
-	          	if(err.status == '400') {
-	          		alert("账号密码错误")
-	          	}
+	        	setTimeout(loading, 1);
+	          	console.log('err: ', err);
+	          	_this.$Message.error("账号密码错误");
 	        });
 	    }
     }
