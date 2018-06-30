@@ -8,6 +8,7 @@
             <h1> 订单 </h1>
             <div class="table-wrapper">
                 <Table stripe size="large" :columns="orderHeader" :data="orderItems"></Table>
+                <h3 v-if="orderItems.length === 0">正在获取订单数据，请耐心等待...</h3>
             </div>
         </div>
     </Content>
@@ -18,7 +19,6 @@
         data () {
             return {
                 timeout: true,
-                modal1: true,
                 orderHeader: [
                     {
                         title: '订单编号',
@@ -146,8 +146,8 @@
                 })
             },
             updateData() {
-                /* 蜜汁3号餐厅 */
-                this.axios.get('/api/restaurant/orders/3')
+                /* 蜜汁4号餐厅 */
+                this.axios.get('/api/restaurant/orders/4')
                     .then(res => {
                         if(res.status =='200') {
                             console.log(res)

@@ -98,12 +98,8 @@
 				<Tabs value="signup">
 					<TabPane label="账户密码登录" name="username">
 						<div class="Loginlabel-Name">
-							<Input id="name-input" v-model="username" placeholder="用户名"></Input>
-							<Input id="password-input" type="password" v-model="password" placeholder="密码"></Input>
-							<Input class="vertificate-input" placeholder="验证码"></Input>
-							<div id="Getvertific-button2">验证码</div>
-							<Checkbox size="large" id="Autosign-checkbox">自动登录</Checkbox>
-							<p id="forget-button1" type="text" class="rightbutton">忘记密码</p>
+							<Input id="name-input" v-model="username" placeholder="用户名" />
+							<Input id="password-input" type="password" v-model="password" placeholder="密码" />
 							<Button type="primary" class="Login-button" @click="handleSubmit()">登录</Button>
 							<p id="Sign-button" type="text" class="rightbutton">注册账户</p>
 						</div>
