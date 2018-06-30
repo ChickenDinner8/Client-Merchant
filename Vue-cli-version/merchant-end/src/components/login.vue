@@ -95,7 +95,7 @@
 	<div class="layout">
 		<div id="Sign-content">
 			<div id="sign-container">
-				<Tabs value="signup">
+				<Tabs value="username">
 					<TabPane label="账户密码登录" name="username">
 						<div class="Loginlabel-Name">
 							<Input id="name-input" v-model="username" placeholder="用户名" />
