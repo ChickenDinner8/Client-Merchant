@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/login'
 import RestaurantInfo from '@/components/RestaurantInfo'
 import Menu from '@/components/Menu'
+import Order from '@/components/Order'
 import QRcode from '@/components/QRcode'
 
 Vue.use(Router)
@@ -32,8 +33,8 @@ export default new Router({
           component: QRcode
         },
       	{
-      		path: '/home',
-      		redirect: '/home/restaurantinfo'
+      		path: 'order',
+      		component: Order
       	}
       ]
     },
