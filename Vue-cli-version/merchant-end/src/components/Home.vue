@@ -37,7 +37,7 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider>
                 <div id="logo" style="width: auto; height: 64px;">
-                    <img src="../assets/logo.jpg" alt="logo">
+                    <img src="../assets/MerchantLogo3.png" alt="logo" style="height:100%;width:100%;">
                 </div>
                 <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
                     <Submenu name="1">
@@ -66,7 +66,21 @@
                 </Menu>
             </Sider>
             <Layout>
-                <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}"></Header>
+                    <Menu mode="horizontal" :theme="theme1" style="height:65px;">
+                        <MenuItem name="1" style="float:right;">
+                            <Avatar src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=123308412,2828093194&fm=58"/>
+                        </MenuItem>
+                        <MenuItem name="2" style="float:right">
+                            <Badge dot>
+                                <Icon type="gear-b" size="26"></Icon>
+                            </Badge>
+                        </MenuItem>
+                        <MenuItem name="2" style="float:right">
+                            <Badge count="3">
+                                <Icon type="email" size="26"></Icon>
+                            </Badge>
+                        </MenuItem>
+                    </Menu>
                 <router-view></router-view>
             </Layout>
         </Layout>
@@ -74,6 +88,10 @@
 </template>
 <script>
     export default {
-
+        data() {
+            return {
+                theme1:'light'
+            }
+        }
     }
 </script>
