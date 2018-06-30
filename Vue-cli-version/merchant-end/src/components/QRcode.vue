@@ -8,18 +8,21 @@
 </template>
 
 <script>
+	import QRCode from 'qrcodejs2'
 	export default {
-		data() {
-
-		},
 		methods: {
 			qrcode() {
 				let  qrcode = new QRCode('qrcode', {
-					wideth:100,
+					width:100,
 					height:100,
-					
-				})
+					text:'test',
+					image:''
+				});
+				console.log(qrcode);
 			}
+		},
+		mounted () {
+			this.qrcode();
 		}
 	}
 </script>
