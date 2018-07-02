@@ -1,5 +1,5 @@
 # Client-Merchant
-# 点餐软件客户端（商家）web网页
+点餐软件客户端（商家）web网页
 
 ## DEMO
 - 商家登录
